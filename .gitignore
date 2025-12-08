@@ -1,0 +1,36 @@
+node_modules
+.env
+*.zkey
+hunts
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+
+# ZK files
+circuits/*.r1cs
+circuits/*.wasm
+circuits/*.zkey
+circuits/*.vkey
+circuits/*.json
+circuits/pot*
+circuits/*.ptau
+
+# Build files
+build/
+dist/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

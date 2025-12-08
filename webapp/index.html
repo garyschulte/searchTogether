@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SearchTogether - Treasure Hunt</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏴‍☠️ SearchTogether</h1>
+            <p class="subtitle">Decentralized Treasure Hunt</p>
+        </header>
+
+        <main>
+            <!-- Wallet Connection -->
+            <section class="card" id="wallet-section">
+                <h2>1. Connect Wallet</h2>
+                <button id="connect-wallet" class="btn btn-primary">
+                    Connect Wallet
+                </button>
+                <div id="wallet-info" class="hidden">
+                    <p class="success">✓ Connected</p>
+                    <p class="address" id="wallet-address"></p>
+                    <p class="network" id="network-info"></p>
+                </div>
+            </section>
+
+            <!-- Hunt Input -->
+            <section class="card" id="hunt-section">
+                <h2>2. Enter Hunt Details</h2>
+
+                <div class="input-method">
+                    <button id="scan-qr-btn" class="btn btn-secondary">
+                        📷 Scan QR Code
+                    </button>
+                    <button id="manual-entry-btn" class="btn btn-secondary">
+                        ⌨️ Manual Entry
+                    </button>
+                </div>
+
+                <!-- QR Scanner -->
+                <div id="qr-scanner" class="hidden">
+                    <video id="qr-video" playsinline></video>
+                    <canvas id="qr-canvas" class="hidden"></canvas>
+                    <p class="info">Position QR code within frame</p>
+                </div>
+
+                <!-- Manual Input -->
+                <div id="manual-input" class="hidden">
+                    <div class="form-group">
+                        <label for="hunt-id">Hunt ID</label>
+                        <input type="number" id="hunt-id" placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="secret">Secret (from QR code)</label>
+                        <input type="text" id="secret" placeholder="12345...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="target-lat">Target Latitude</label>
+                        <input type="number" step="0.000001" id="target-lat" placeholder="37.774900">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="target-lon">Target Longitude</label>
+                        <input type="number" step="0.000001" id="target-lon" placeholder="-122.419400">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contract-address">Contract Address</label>
+                        <input type="text" id="contract-address" placeholder="0x...">
+                    </div>
+
+                    <button id="load-hunt-data" class="btn btn-primary" disabled>
+                        Load Hunt Data
+                    </button>
+                </div>
+
+                <div id="hunt-data-display" class="hidden">
+                    <h3>Hunt Data Loaded</h3>
+                    <div class="data-item">
+                        <span>Hunt ID:</span>
+                        <span id="display-hunt-id"></span>
+                    </div>
+                    <div class="data-item">
+                        <span>Contract:</span>
+                        <span id="display-contract" class="address-short"></span>
+                    </div>
+                    <button id="clear-hunt-data" class="btn btn-small">Clear</button>
+                </div>
+            </section>
+
+            <!-- GPS Location -->
+            <section class="card" id="gps-section">
+                <h2>3. Get Your Location</h2>
+
+                <div class="input-method">
+                    <button id="get-location" class="btn btn-secondary">
+                        📍 Auto GPS
+                    </button>
+                    <button id="manual-gps-btn" class="btn btn-secondary">
+                        ⌨️ Manual GPS
+                    </button>
+                </div>
+
+                <div id="manual-gps-input" class="hidden">
+                    <div class="form-group">
+                        <label for="manual-gps-lat">Your Latitude (decimal degrees)</label>
+                        <input type="number" step="0.000001" id="manual-gps-lat" placeholder="37.769400">
+                        <p class="info">North is positive, South is negative</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="manual-gps-lon">Your Longitude (decimal degrees)</label>
+                        <input type="number" step="0.000001" id="manual-gps-lon" placeholder="-122.486200">
+                        <p class="info">East is positive, West is negative</p>
+                    </div>
+                    <button id="load-manual-gps" class="btn btn-primary" disabled>
+                        Use These Coordinates
+                    </button>
+                </div>
+
+                <div id="location-info" class="hidden">
+                    <p class="success">✓ Location obtained</p>
+                    <div class="data-item">
+                        <span>Latitude:</span>
+                        <span id="current-lat"></span>
+                    </div>
+                    <div class="data-item">
+                        <span>Longitude:</span>
+                        <span id="current-lon"></span>
+                    </div>
+                    <div class="data-item">
+                        <span>Accuracy:</span>
+                        <span id="gps-accuracy"></span>
+                    </div>
+                    <div id="distance-check" class="hidden">
+                        <p id="distance-result"></p>
+                    </div>
+                    <button id="clear-gps" class="btn btn-small">Clear GPS</button>
+                </div>
+            </section>
+
+            <!-- Proof Generation -->
+            <section class="card" id="proof-section">
+                <h2>4. Generate Proof</h2>
+                <button id="generate-proof" class="btn btn-primary" disabled>
+                    Generate ZK Proof
+                </button>
+                <div id="proof-status" class="hidden">
+                    <div class="loading" id="proof-loading">
+                        <div class="spinner"></div>
+                        <p>Generating proof... This may take 1-60 seconds depending on your device.</p>
+                    </div>
+                    <div class="success hidden" id="proof-success">
+                        <p>✓ Proof generated successfully!</p>
+                        <p class="small" id="proof-time"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Claim Submission -->
+            <section class="card" id="claim-section">
+                <h2>5. Claim Treasure</h2>
+                <button id="submit-claim" class="btn btn-success" disabled>
+                    Submit Claim
+                </button>
+                <div id="claim-status" class="hidden">
+                    <div class="loading" id="claim-loading">
+                        <div class="spinner"></div>
+                        <p>Submitting transaction...</p>
+                    </div>
+                    <div class="success hidden" id="claim-success">
+                        <p>🎉 Treasure claimed successfully!</p>
+                        <p class="small">Transaction hash:</p>
+                        <p class="tx-hash" id="tx-hash"></p>
+                        <a id="etherscan-link" target="_blank" class="btn btn-small">View on Explorer</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p class="small">Built with ❤️ for Ethereum</p>
+            <p class="small">Powered by ZK-SNARKs</p>
+        </footer>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>⚠️ Error</h3>
+            <p id="error-message"></p>
+            <button id="close-error" class="btn btn-primary">OK</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.7.0/build/snarkjs.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

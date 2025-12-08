@@ -1,0 +1,35 @@
+{
+  "name": "searchtogether",
+  "version": "1.0.0",
+  "description": "Decentralized treasure hunt on Ethereum with ZK proofs",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "node": "hardhat node",
+    "circuit:compile": "cd circuits && ./compile.sh",
+    "circuit:setup": "cd circuits && ./setup.sh"
+  },
+  "keywords": [
+    "ethereum",
+    "treasure-hunt",
+    "zk-snark",
+    "solidity"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "hardhat": "^2.19.0",
+    "circomlibjs": "^0.1.7",
+    "snarkjs": "^0.7.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "circomlib": "^2.0.5",
+    "dotenv": "^16.3.1"
+  }
+}
