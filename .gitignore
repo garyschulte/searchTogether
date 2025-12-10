@@ -23,6 +23,7 @@ circuits/*.ptau
 # Build files
 build/
 dist/
+deployments/
 
 # IDE
 .vscode

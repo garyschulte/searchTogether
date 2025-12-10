@@ -22,6 +22,13 @@ module.exports = {
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL || "",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
+    },
+    ephemery: {
+      url: process.env.EPHEMERY_RPC_URL || "https://otter.bordel.wtf/erigon",
+      chainId: parseInt(process.env.EPHEMERY_CHAIN_ID || "39438135"),
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      timeout: 60000,
+      gasPrice: 1000000000 // 1 gwei
     }
   },
   etherscan: {
