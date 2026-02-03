@@ -80,10 +80,7 @@ SearchTogether allows users to create real-world treasure hunts with cryptocurre
 ### Install Circom
 
 ```bash
-# On macOS
-brew install circom
-
-# Or build from source
+# build from source
 git clone https://github.com/iden3/circom.git
 cd circom
 cargo build --release

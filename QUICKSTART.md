@@ -17,9 +17,6 @@ cd searchtogether
 npm install
 
 # Install Circom (if not already installed)
-# macOS:
-brew install circom
-
 # Linux/Unix:
 # Download from https://github.com/iden3/circom/releases
 # Or build from source:
